@@ -1,0 +1,14 @@
+# Build artifacts
+/classes/
+/jar/
+
+# Logs
+*.log
+
+# OS files
+.DS_Store
+
+# IDE files
+.idea/
+*.iml
+.vscode/

@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project name="lox" default="run" basedir=".">
+
+    <!-- Clean build artifacts -->
+    <target name="clean">
+        <delete dir="classes"/>
+        <delete dir="jar"/>
+    </target>
+
+    <!-- Compile Java source -->
+    <target name="compile">
+        <mkdir dir="classes"/>
+        <javac srcdir="src"
+               destdir="classes"
+               includeantruntime="false"/>
+    </target>
+
+    <!-- Create executable JAR -->
+    <target name="jar" depends="compile">
+        <mkdir dir="jar"/>
+        <jar destfile="jar/lox.jar" basedir="classes">
+            <manifest>
+                <attribute name="Main-Class" value="Lox"/>
+            </manifest>
+        </jar>
+    </target>
+
+    <!-- Run the program -->
+    <target name="run" depends="compile">
+        <java classname="Lox" fork="true">
+            <classpath>
+                <pathelement path="classes"/>
+            </classpath>
+        </java>
+    </target>
+
+</project>
