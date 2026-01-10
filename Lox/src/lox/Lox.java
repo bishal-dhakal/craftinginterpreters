@@ -1,4 +1,4 @@
-package lox.src;
+package lox;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -55,7 +55,7 @@ public class Lox {
     }
 
     static void error(int line, String message) {
-        report(line, " ", message);
+        report(line, "", message);
     }
 
     private static void report(int line, String where, String message) {

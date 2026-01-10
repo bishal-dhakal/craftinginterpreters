@@ -1,6 +1,12 @@
 # Build artifacts
-/classes/
+classes/
+/Lox/classes/
+/Lox/out/
 /jar/
+/bin/
+*.class
+*.out
+*.dSYM/
 
 # Logs
 *.log
@@ -12,3 +18,10 @@
 .idea/
 *.iml
 .vscode/
+
+# Deleted or moved directory
+/Lox/lox/
+
+# Scratch files
+/Lox/hello.txt
+Lox/hello.txt

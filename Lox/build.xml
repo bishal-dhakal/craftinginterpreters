@@ -20,17 +20,19 @@
         <mkdir dir="jar"/>
         <jar destfile="jar/lox.jar" basedir="classes">
             <manifest>
-                <attribute name="Main-Class" value="Lox"/>
+                <attribute name="Main-Class" value="lox.Lox"/>
             </manifest>
         </jar>
     </target>
 
     <!-- Run the program -->
+    <property name="args" value=""/>
     <target name="run" depends="compile">
-        <java classname="Lox" fork="true">
+        <java classname="lox.Lox" fork="true">
             <classpath>
                 <pathelement path="classes"/>
             </classpath>
+            <arg line="${args}"/>
         </java>
     </target>
 

@@ -1,11 +1,9 @@
-package lox.src;
+package lox;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
-import static lox.src.TokenType.*;
 
 class Scanner {
     private final String source;
@@ -15,22 +13,22 @@ class Scanner {
 
     static {
         keywords = new HashMap<>();
-        keywords.put("and", AND);
-        keywords.put("class", CLASS);
-        keywords.put("else", ELSE);
-        keywords.put("false", FALSE);
-        keywords.put("for", FOR);
-        keywords.put("fun", FUN);
-        keywords.put("if", IF);
-        keywords.put("nil", NIL);
-        keywords.put("or", OR);
-        keywords.put("print", PRINT);
-        keywords.put("return", RETURN);
-        keywords.put("super", SUPER);
-        keywords.put("this", THIS);
-        keywords.put("true", TRUE);
-        keywords.put("var", VAR);
-        keywords.put("while", WHILE);
+        keywords.put("and", TokenType.AND);
+        keywords.put("class", TokenType.CLASS);
+        keywords.put("else", TokenType.ELSE);
+        keywords.put("false", TokenType.FALSE);
+        keywords.put("for", TokenType.FOR);
+        keywords.put("fun", TokenType.FUN);
+        keywords.put("if", TokenType.IF);
+        keywords.put("nil", TokenType.NIL);
+        keywords.put("or", TokenType.OR);
+        keywords.put("print", TokenType.PRINT);
+        keywords.put("return", TokenType.RETURN);
+        keywords.put("super", TokenType.SUPER);
+        keywords.put("this", TokenType.THIS);
+        keywords.put("true", TokenType.TRUE);
+        keywords.put("var", TokenType.VAR);
+        keywords.put("while", TokenType.WHILE);
     }
 
     private int start = 0;
@@ -47,7 +45,7 @@ class Scanner {
             scanToken();
         }
 
-        tokens.add(new Token(EOF, "", null, line));
+        tokens.add(new Token(TokenType.EOF, "", null, line));
         return tokens;
     }
 
@@ -55,46 +53,46 @@ class Scanner {
         char c = advance();
         switch (c) {
             case '(':
-                addToken(LEFT_PAREN);
+                addToken(TokenType.LEFT_PAREN);
                 break;
             case ')':
-                addToken(RIGHT_PAREN);
+                addToken(TokenType.RIGHT_PAREN);
                 break;
             case '{':
-                addToken(LEFT_BRACE);
+                addToken(TokenType.LEFT_BRACE);
                 break;
             case '}':
-                addToken(RIGHT_BRACE);
+                addToken(TokenType.RIGHT_BRACE);
                 break;
             case ',':
-                addToken(COMMA);
+                addToken(TokenType.COMMA);
                 break;
             case '.':
-                addToken(DOT);
+                addToken(TokenType.DOT);
                 break;
             case '-':
-                addToken(MINUS);
+                addToken(TokenType.MINUS);
                 break;
             case '+':
-                addToken(PLUS);
+                addToken(TokenType.PLUS);
                 break;
             case ';':
-                addToken(SEMICOLON);
+                addToken(TokenType.SEMICOLON);
                 break;
             case '*':
-                addToken(STAR);
+                addToken(TokenType.STAR);
                 break;
             case '!':
-                addToken(match('=') ? BANG_EQUAL : BANG);
+                addToken(match('=') ? TokenType.BANG_EQUAL : TokenType.BANG);
                 break;
             case '=':
-                addToken(match('=') ? EQUAL_EQUAL : EQUAL);
+                addToken(match('=') ? TokenType.EQUAL_EQUAL : TokenType.EQUAL);
                 break;
             case '<':
-                addToken(match('=') ? LESS_EQUAL : LESS);
+                addToken(match('=') ? TokenType.LESS_EQUAL : TokenType.LESS);
                 break;
             case '>':
-                addToken(match('=') ? GREATER_EQUAL : GREATER);
+                addToken(match('=') ? TokenType.GREATER_EQUAL : TokenType.GREATER);
                 break;
             case '/':
                 if (match('/')) {
@@ -102,7 +100,7 @@ class Scanner {
                     while (peek() != '\n' && !isAtEnd())
                         advance();
                 } else {
-                    addToken(SLASH);
+                    addToken(TokenType.SLASH);
                 }
                 break;
             case ' ':
@@ -132,10 +130,12 @@ class Scanner {
     }
 
     private void identifier() {
+        while (isAlphaNumeric(peek()))
+            advance();
         String text = source.substring(start, current);
         TokenType type = keywords.get(text);
         if (type == null)
-            type = IDENTIFIER;
+            type = TokenType.IDENTIFIER;
         addToken(type);
     }
 
@@ -152,7 +152,7 @@ class Scanner {
                 advance();
         }
 
-        addToken(NUMBER,
+        addToken(TokenType.NUMBER,
                 Double.parseDouble(source.substring(start, current)));
     }
 
@@ -173,7 +173,7 @@ class Scanner {
 
         // Trim the surrounding quotes.
         String value = source.substring(start + 1, current - 1);
-        addToken(STRING, value);
+        addToken(TokenType.STRING, value);
     }
 
     private boolean match(char expected) {
